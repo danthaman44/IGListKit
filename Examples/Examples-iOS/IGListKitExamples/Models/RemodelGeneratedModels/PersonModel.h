@@ -11,6 +11,7 @@
 @property (nonatomic, readonly, copy) NSString *firstName;
 @property (nonatomic, readonly, copy) NSString *lastName;
 @property (nonatomic, readonly, copy) NSString *uniqueId;
+@property (nonatomic, readonly, copy) NSString *image;
 
 + (instancetype)new NS_UNAVAILABLE;
 

@@ -14,3 +14,4 @@
 
 #import "ObjcDemoViewController.h"
 #import "ObjcGeneratedModelDemoViewController.h"
+#import "IGFeedViewController.h"

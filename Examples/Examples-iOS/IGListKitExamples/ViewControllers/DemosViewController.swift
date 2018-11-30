@@ -23,6 +23,8 @@ final class DemosViewController: UIViewController, ListAdapterDataSource {
     let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
 
     let demos: [DemoItem] = [
+        DemoItem(name: "IGFeed",
+                 controllerClass: IGFeedViewController.self),
         DemoItem(name: "Tail Loading",
                  controllerClass: LoadMoreViewController.self),
         DemoItem(name: "Search Autocomplete",

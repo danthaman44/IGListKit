@@ -14,11 +14,14 @@
 
 #import "InteractiveCell.h"
 
-@interface InteractiveCell ()
+@interface InteractiveCell () <UITextFieldDelegate>
 @property (nonatomic, strong) UIButton *likeButton;
 @property (nonatomic, strong) UIButton *commentButton;
 @property (nonatomic, strong) UIButton *shareButton;
 @property (nonatomic, strong) CALayer *separator;
+@property (nonatomic, strong) UITextField *commentTextField;
+@property (nonatomic, strong) UITextField *accessoryTextField;
+
 @end
 
 @implementation InteractiveCell
@@ -61,10 +64,34 @@
     [self.shareButton.titleLabel setFont:titleFont];
     [self.shareButton sizeToFit];
     [self.contentView addSubview:self.shareButton];
-    
+
+    self.commentTextField = [[UITextField alloc] init];
+    [self.commentTextField setPlaceholder:@"Add a comment..."];
+    [self.commentTextField setBorderStyle: UITextBorderStyleRoundedRect];
+    [self.contentView addSubview:self.commentTextField];
+
+    self.accessoryTextField = [[UITextField alloc] init];
+    [self.accessoryTextField setPlaceholder:@"Add a comment..."];
+    [self.accessoryTextField setBorderStyle: UITextBorderStyleRoundedRect];
+    [self.commentTextField setInputAccessoryView:self.accessoryTextField];
+    self.commentTextField.delegate = self;
+    self.accessoryTextField.delegate = self;
+
     self.separator = [[CALayer alloc] init];
     self.separator.backgroundColor = [UIColor colorWithRed:200/255.0 green:199/255.0 blue:204/255.0 alpha:1].CGColor;
     [self.contentView.layer addSublayer:self.separator];
+    [self setupGestureRecognizers];
+
+}
+
+- (void)setupGestureRecognizers {
+    SEL selector = @selector(dismissKeyboard:);
+    UIGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:selector];
+    [self.contentView addGestureRecognizer:recognizer];
+}
+
+- (void)dismissKeyboard:(UITapGestureRecognizer*)recognizer {
+    [self.commentTextField resignFirstResponder];
 }
 
 - (void)layoutSubviews {
@@ -72,14 +99,30 @@
     
     CGRect bounds = self.contentView.bounds;
     CGFloat leftPadding = 8.0;
-    self.likeButton.frame = CGRectMake(leftPadding, 0, CGRectGetWidth(self.likeButton.frame), bounds.size.height);
+    CGFloat buttonHeight = 24.0;
+    self.likeButton.frame = CGRectMake(leftPadding, 0, CGRectGetWidth(self.likeButton.frame), buttonHeight);
     
-    self.commentButton.frame = CGRectMake(leftPadding + CGRectGetMaxX(self.likeButton.frame), 0, CGRectGetWidth(self.commentButton.frame), bounds.size.height);
+    self.commentButton.frame = CGRectMake(leftPadding + CGRectGetMaxX(self.likeButton.frame), 0, CGRectGetWidth(self.commentButton.frame), buttonHeight);
     
-    self.shareButton.frame = CGRectMake(leftPadding + CGRectGetMaxX(self.commentButton.frame), 0, CGRectGetWidth(self.shareButton.frame), bounds.size.height);
+    self.shareButton.frame = CGRectMake(leftPadding + CGRectGetMaxX(self.commentButton.frame), 0, CGRectGetWidth(self.shareButton.frame), buttonHeight);
+
+    CGFloat textFieldHeight = 35.0;
+    CGFloat spacing = 6.0;
+    self.commentTextField.frame = CGRectMake(leftPadding, bounds.size.height - textFieldHeight - spacing, bounds.size.width - leftPadding, textFieldHeight);
+
+    self.accessoryTextField.frame = CGRectMake(0, 0, bounds.size.width, textFieldHeight);
     
     CGFloat height = 0.5;
     self.separator.frame = CGRectMake(leftPadding, bounds.size.height - height, bounds.size.width - leftPadding, height);
 }
+
+#pragma mark UITextFieldDelegate
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [self.commentTextField resignFirstResponder];
+    return true;
+}
+
+
 
 @end

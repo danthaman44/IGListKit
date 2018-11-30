@@ -17,7 +17,7 @@
 #import "PersonModel.h"
 
 @interface PersonCell ()
-@property (nonatomic, strong) UIView *avatarView;
+@property (nonatomic, strong) UIImageView *avatarView;
 @property (nonatomic, strong) UILabel *nameLabel;
 @property (nonatomic, strong) UIView *separatorView;
 @property (nonatomic, assign) CGFloat separatorHeight;
@@ -40,8 +40,9 @@
 }
 
 - (void)setupSubviews {
-    self.avatarView = [[UIView alloc] init];
+    self.avatarView = [[UIImageView alloc] init];
     self.avatarView.backgroundColor = [UIColor colorWithWhite:0.85 alpha:1.0];
+    self.avatarView.image = [UIImage imageNamed:@"PersonPlaceholder"];
     [self.contentView addSubview:self.avatarView];
     
     self.nameLabel = [[UILabel alloc] init];

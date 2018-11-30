@@ -25,6 +25,12 @@
     return self;
 }
 
+#pragma mark - NSCopying
+
+- (id)copy {
+    return [[Post alloc] initWithUsername:self.username comments:self.comments];
+}
+
 #pragma mark - IGListDiffable
 
 - (id<NSObject>)diffIdentifier {
